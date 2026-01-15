@@ -1,0 +1,100 @@
+plugins {
+    id 'java'
+    id 'com.gradleup.shadow' version '9.3.1'
+    id "org.jetbrains.gradle.plugin.idea-ext" version "1.3"
+}
+
+group = "io.profidev"
+
+ext {
+    hytaleHome = "${System.getProperty("user.home")}/.var/app/com.hypixel.HytaleLauncher/data/Hytale"
+}
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(java_version)
+    withSourcesJar()
+    withJavadocJar()
+}
+
+javadoc {
+    options.addStringOption("Xdoclint:-missing", "-quiet")
+}
+
+dependencies {
+    // Hytale Server API - compileOnly since server provides it
+    compileOnly(files("$hytaleHome/install/$patchline/package/game/latest/Server/HytaleServer.jar"))
+
+    // Optional: Common utilities
+    implementation 'com.google.guava:guava:32.1.3-jre'
+    implementation 'com.google.code.gson:gson:2.10.1'
+
+    // Testing
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+def serverRunDir = file("$projectDir/run")
+if (!serverRunDir.exists()) {
+    serverRunDir.mkdirs()
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'hytale'
+        url = 'https://repo.hytale.com/releases'
+    }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+shadowJar {
+    dependsOn processResources
+
+    archiveClassifier.set('')
+
+    // Relocate dependencies to avoid conflicts
+    relocate 'com.google.gson', "io.profidev.${rootProject.name}.libs.gson"
+}
+
+tasks.named('build') {
+    dependsOn shadowJar
+}
+
+tasks.register('deploy', Copy) {
+    dependsOn shadowJar
+    from shadowJar.archiveFile
+    into './run/mods'
+}
+
+processResources {
+    filesMatching('manifest.json') {
+        expand(
+                'Version': project.version,
+                'Name': project.name,
+                'Main': "${project.group}.${rootProject.name}.${rootProject.name}",
+        )
+    }
+}
+
+idea.project.settings.runConfigurations {
+    'HytaleServer'(org.jetbrains.gradle.ext.JarApplication) {
+        jarPath = "$hytaleHome/install/$patchline/package/game/latest/Server/HytaleServer.jar"
+
+        beforeRun {
+            'beforeApp'(org.jetbrains.gradle.ext.GradleTask) {
+                task = deploy
+            }
+        }
+
+        programParameters = "--allow-op --assets=$hytaleHome/install/$patchline/package/game/latest/Assets.zip"
+
+        if (load_user_mods.toBoolean()) {
+            programParameters += " --mods=$hytaleHome/UserData/Mods"
+        }
+
+        workingDirectory = serverRunDir.absolutePath
+    }
+}

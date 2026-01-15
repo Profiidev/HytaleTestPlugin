@@ -1,0 +1,18 @@
+{
+    "Group": "io.profidev",
+    "Name": "${Name}",
+    "Version": "${Version}",
+    "Description": "A plugin made by Profidev",
+    "Authors": [
+        {
+            "Name": "Profidev"
+        }
+    ],
+    "Website": "github.com/ProfiiDev",
+    "ServerVersion": "*",
+    "Dependencies": {},
+    "OptionalDependencies": {},
+    "DisabledByDefault": false,
+    "Main": "${Main}",
+    "IncludesAssetPack": true
+}
