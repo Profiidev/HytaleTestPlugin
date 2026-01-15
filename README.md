@@ -1,4 +1,4 @@
-# HytalePluginTemplate
+# HytaleTestPlugin
 
 A simple plugin template for Hytale server plugins.
 
