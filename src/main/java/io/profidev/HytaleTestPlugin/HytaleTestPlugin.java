@@ -1,17 +1,14 @@
 package io.profidev.HytaleTestPlugin;
 
-import com.hypixel.hytale.assetstore.AssetExtraInfo.Data;
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.modules.interaction.interaction.config.Interaction;
 import com.hypixel.hytale.server.core.modules.interaction.interaction.config.RootInteraction;
-import com.hypixel.hytale.server.core.modules.interaction.interaction.config.server.OpenCustomUIInteraction;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.WorldConfig;
 import com.hypixel.hytale.server.core.universe.world.worldgen.provider.VoidWorldGenProvider;
 
-import java.lang.reflect.Field;
 import java.util.Collections;
 
 import javax.annotation.Nonnull;
@@ -30,31 +27,8 @@ public class HytaleTestPlugin extends JavaPlugin {
 
         this.getCommandRegistry().registerCommand(new WorldCommand());
         this.getCommandRegistry().registerCommand(new SpawnShopCommand());
-        OpenCustomUIInteraction.registerCustomPageSupplier(this, ShopDialogSupplier.class, "OpenShopMenu",
-                new ShopDialogSupplier());
 
-        var interaction = new OpenCustomUIInteraction();
-
-        Field idFiled;
-        try {
-            idFiled = OpenCustomUIInteraction.class.getDeclaredField("customPageSupplier");
-            idFiled.setAccessible(true);
-            idFiled.set(interaction, new ShopDialogSupplier());
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            LOGGER.atSevere().withCause(e).log("Failed to set customPageSupplier field via reflection");
-        }
-
-        try {
-            idFiled = Interaction.class.getDeclaredField("id");
-            idFiled.setAccessible(true);
-            idFiled.set(interaction, "OpenShopMenu_OpenUI");
-            Field dataField = Interaction.class.getDeclaredField("data");
-            dataField.setAccessible(true);
-            dataField.set(interaction, new Data(Interaction.class, "OpenShopMenu_OpenUI", null));
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            LOGGER.atSevere().withCause(e).log("Failed to set id field via reflection");
-        }
-
+        var interaction = new ShopDialogInteraction(this);
         Interaction.getAssetStore().loadAssets("OpenShopMenu", Collections.singletonList(interaction));
 
         var rootInteraction = new RootInteraction("OpenShopMenu", new String[] { "OpenShopMenu_OpenUI" });
