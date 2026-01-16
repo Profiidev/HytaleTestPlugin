@@ -3,6 +3,9 @@ package io.profidev.HytaleTestPlugin;
 import com.hypixel.hytale.logger.HytaleLogger;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
 import com.hypixel.hytale.server.core.plugin.JavaPluginInit;
+import com.hypixel.hytale.server.core.universe.Universe;
+import com.hypixel.hytale.server.core.universe.world.WorldConfig;
+import com.hypixel.hytale.server.core.universe.world.worldgen.provider.VoidWorldGenProvider;
 
 import javax.annotation.Nonnull;
 
@@ -16,6 +19,41 @@ public class HytaleTestPlugin extends JavaPlugin {
 
     @Override
     protected void setup() {
-        LOGGER.atInfo().log("Hytale Plugin Template is setting up!");
+        LOGGER.atInfo().log("Hytale Test Plugin is setting up!");
+
+        this.getCommandRegistry().registerCommand(new WorldCommand());
+    }
+
+    @Override
+    protected void start() {
+        var universe = Universe.get();
+        var name = "test_world";
+
+        for (var worldName : universe.getWorlds().keySet()) {
+            if (worldName.equals("default")) {
+                var world = universe.getWorlds().get("default");
+                LOGGER.atInfo().log("World 'default' %s", world.getWorldConfig().getWorldGenProvider());
+            }
+        }
+
+        for (var world : universe.getWorlds().keySet()) {
+            LOGGER.atInfo().log("Existing world: %s", world);
+            if (world.equals(name)) {
+                LOGGER.atInfo().log("World '%s' already exists, skipping creation.", name);
+                return;
+            }
+        }
+
+        LOGGER.atInfo().log("Creating world '%s'", name);
+        var config = new WorldConfig();
+        config.setWorldGenProvider(new VoidWorldGenProvider());
+        var path = universe.getPath().resolve("worlds").resolve(name);
+        if (path == null) {
+            LOGGER.atSevere().log("Failed to resolve path for world '%s'", name);
+            return;
+        }
+
+        path.toFile().mkdirs();
+        universe.makeWorld(name, path, config);
     }
 }
