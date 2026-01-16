@@ -1,0 +1,6 @@
+{
+  "$Comment": "RootInteraction for opening NPC dialog UI",
+  "Interactions": [
+    "OpenShopMenu_OpenUI"
+  ]
+}

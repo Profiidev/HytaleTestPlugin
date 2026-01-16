@@ -1,0 +1,7 @@
+{
+  "$Comment": "Interaction for opening NPC dialog UI",
+  "Type": "OpenCustomUI",
+  "Page": {
+    "Id": "OpenShopMenu"
+  }
+}
