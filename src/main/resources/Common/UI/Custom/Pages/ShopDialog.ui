@@ -1,47 +1,124 @@
 $C = "../Common.ui";
 
-@GreetButtonStyle = TextButtonStyle(
-    Default: (Background: #3a7bd5, LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-    Hovered: (Background: #4a8be5, LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center)),
-    Pressed: (Background: #2a6bc5, LabelStyle: (FontSize: 16, TextColor: #ffffff, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center))
+$C.@PageOverlay {}
+
+@ButtonsLightHover = "ButtonsLightHover.ogg";
+
+@DefaultTabNavigation = (
+  Activate: (
+    SoundPath: "DefaultTabActivate.ogg",
+    Volume: -2,
+    MinPitch: -0.2,
+    MaxPitch: 0.2
+  ),
+  MouseHover: (
+    SoundPath: @ButtonsLightHover,
+    Volume: 6
+  )
+);
+
+@IconOnlyTopTabAnchor = Anchor(Width: 82, Height: 62, Right: 5, Bottom: -14);
+@TextTopTabAnchor = Anchor(Height: 62, Right: 5, Bottom: -14);
+
+@IconOnlyTopTabStyle = TabStyleState(
+  Background: "Tab.png",
+  Overlay: "TabOverlay.png",
+  IconAnchor: (Width: 44, Height: 44),
+  LabelStyle: (FontSize: 19),
+  Anchor: @IconOnlyTopTabAnchor
+);
+
+@TextTopTabStyle = TabStyleState(
+  Background: (TexturePath: "Tab.png", Border: 3),
+  Overlay: "TabSelectedOverlay.png",
+  IconAnchor: (Width: 44, Height: 44),
+  LabelStyle: (FontSize: 19),
+  Padding: (Left: 20, Right: 20, Top: 14),
+  Anchor: @TextTopTabAnchor
+);
+
+@IconOnlyTopTabsStyle = TabNavigationStyle(
+  TabStyle: (
+    Default: @IconOnlyTopTabStyle,
+    Hovered: (...@IconOnlyTopTabStyle, Anchor: (...@IconOnlyTopTabAnchor, Bottom: -5)),
+    Pressed: (...@IconOnlyTopTabStyle, Anchor: (...@IconOnlyTopTabAnchor, Bottom: -8))
+  ),
+  SelectedTabStyle: (
+    Default: (
+      ...@IconOnlyTopTabStyle,
+      Anchor: (...@IconOnlyTopTabAnchor, Bottom: 0),
+      IconAnchor: (Width: 44, Height: 44),
+      Overlay: "TabSelectedOverlay.png"
+    )
+  ),
+  TabSounds: @DefaultTabNavigation
 );
 
 Group {
-    Anchor: (Width: 400, Height: 280);
-    Background: #1a1a2e(0.95);
-    LayoutMode: Top;
-    Padding: (Full: 20);
+  LayoutMode: Top;
+  Anchor: (Top: 112, Right: 50);
 
-    Label #Title {
-        Text: "Tutorial Level 2";
-        Anchor: (Height: 40);
-        Style: (FontSize: 24, TextColor: #ffffff, HorizontalAlignment: Center);
+  TabNavigation #MainTabs {
+    Anchor: (Height: 62 + 4, Left: 2, Right: 0);
+    Style: @IconOnlyTopTabsStyle;
+    SelectedTab: "Settings";
+
+    TabButton #Settings {
+      Id: "Settings";
+      Icon: "IconGeneralSettings.png";
+      IconSelected: "IconGeneralSettingsActivated.png";
+      TooltipText: %client.builderTools.panel.quickSettings;
+      TextTooltipStyle: $C.@DefaultTextTooltipStyle;
     }
 
-    Label #Subtitle {
-        Text: "Events - TextField + Button";
-        Anchor: (Height: 25);
-        Style: (FontSize: 14, TextColor: #888888, HorizontalAlignment: Center);
+    TabButton #Brushes {
+      Id: "Brushes";
+      Icon: "IconGeneralSettings.png";
+      IconSelected: "IconGeneralSettingsActivated.png";
+      TooltipText: %client.builderTools.panel.quickSettings;
+      TextTooltipStyle: $C.@DefaultTextTooltipStyle;
     }
 
-    Group { Anchor: (Height: 10); }
-
-    Label #Prompt {
-        Text: "Enter your name:";
-        Anchor: (Height: 25);
-        Style: (FontSize: 16, TextColor: #cccccc);
+    TabButton #EntityToolSettings {
+      Id: "EntityToolSettings";
+      Icon: "IconGeneralSettings.png";
+      IconSelected: "IconGeneralSettingsActivated.png";
+      TooltipText: %client.builderTools.panel.quickSettings;
+      Visible: false;
+      TextTooltipStyle: $C.@DefaultTextTooltipStyle;
     }
 
-    $C.@TextField #NameInput {
-        Anchor: (Height: 40);
-        PlaceholderText: "Type your name here...";
+    TabButton #SelectedEntity {
+      Id: "SelectedEntity";
+      Icon: "IconGeneralSettings.png";
+      IconSelected: "IconGeneralSettingsActivated.png";
+      TooltipText: %client.builderTools.panel.quickSettings;
+      Visible: false;
+      TextTooltipStyle: $C.@DefaultTextTooltipStyle;
     }
+  }
 
-    Group { Anchor: (Height: 10); }
+$C.@Container {
+  Anchor: (Width: 700, Height: 500);
+  
 
-    TextButton #GreetButton {
-        Anchor: (Height: 45);
-        Text: "Greet Me!";
-        Style: @GreetButtonStyle;
+
+  #Title {
+    Group {
+      $C.@Title {
+        @Text = "Shop Dialog Example";
+      }
     }
+  }
+
+  #Content {
+    LayoutMode: Left;
+
+    Group #ElementList {
+      FlexWeight: 1;
+      LayoutMode: TopScrolling;
+      ScrollbarStyle: $C.@DefaultScrollbarStyle;
+    }
+  }
+  }
 }

@@ -29,8 +29,8 @@ public class ShopDialogPage extends InteractiveCustomUIPage<ShopDialogPage.ShopD
       @Nonnull UIEventBuilder uiEventBuilder,
       @Nonnull Store<EntityStore> store) {
     uiCommandBuilder.append("Pages/ShopDialog.ui");
-    uiEventBuilder.addEventBinding(CustomUIEventBindingType.Activating, "#GreetButton",
-        new EventData().append("@PlayerName", "#NameInput.Value"));
+    //uiEventBuilder.addEventBinding(CustomUIEventBindingType.Activating, "#GreetButton",
+     //   new EventData().append("@PlayerName", "#NameInput.Value"));
   }
 
   @Override
@@ -46,7 +46,7 @@ public class ShopDialogPage extends InteractiveCustomUIPage<ShopDialogPage.ShopD
         ShopDialogData::new);
     @Nonnull
     public static final BuilderCodec<ShopDialogData> CODEC = BUILDER
-        .append(new KeyedCodec("@PlayerName", Codec.STRING), (d, v) -> {
+        .append(new KeyedCodec<>("@PlayerName", Codec.STRING), (d, v) -> {
           d.Action = v;
         }, (d) -> {
           return d.Action;

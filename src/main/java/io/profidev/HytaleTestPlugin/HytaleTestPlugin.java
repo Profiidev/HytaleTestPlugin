@@ -27,8 +27,9 @@ public class HytaleTestPlugin extends JavaPlugin {
 
         this.getCommandRegistry().registerCommand(new WorldCommand());
         this.getCommandRegistry().registerCommand(new SpawnShopCommand());
+        this.getCommandRegistry().registerCommand(new UICommand());
 
-        var interaction = new ShopDialogInteraction(this);
+        var interaction = new ShopDialogInteraction();
         Interaction.getAssetStore().loadAssets("OpenShopMenu", Collections.singletonList(interaction));
 
         var rootInteraction = new RootInteraction("OpenShopMenu", new String[] { "OpenShopMenu_OpenUI" });
