@@ -54,76 +54,75 @@ $C.@PageOverlay {}
 );
 
 Group {
-  LayoutMode: Center;
+  LayoutMode: CenterMiddle;
   Padding: Padding(Full: $C.@FullPaddingValue);
 
-Group {
-  LayoutMode: Top;
+  Group {
+    LayoutMode: Top;
 
-  TabNavigation #MainTabs {
-    Anchor: (Height: 62 + 4, Left: 2, Right: 0);
-    Style: @IconOnlyTopTabsStyle;
-    SelectedTab: "Settings";
-
-    TabButton #Settings {
-      Id: "Settings";
-      Icon: "IconGeneralSettings.png";
-      IconSelected: "IconGeneralSettingsActivated.png";
-      TooltipText: %client.builderTools.panel.quickSettings;
-      TextTooltipStyle: $C.@DefaultTextTooltipStyle;
+    TabNavigation #MainTabs {
+      Anchor: (Height: 62 + 4, Left: 2, Right: 0);
+      Style: @IconOnlyTopTabsStyle;
+      SelectedTab: "Settings";
+  
+      TabButton #Settings {
+        Id: "Settings";
+        Icon: "IconGeneralSettings.png";
+        IconSelected: "IconGeneralSettingsActivated.png";
+        TooltipText: %client.builderTools.panel.quickSettings;
+        TextTooltipStyle: $C.@DefaultTextTooltipStyle;
+      }
+  
+      TabButton #Brushes {
+        Id: "Brushes";
+        Icon: "IconGeneralSettings.png";
+        IconSelected: "IconGeneralSettingsActivated.png";
+        TooltipText: %client.builderTools.panel.quickSettings;
+        TextTooltipStyle: $C.@DefaultTextTooltipStyle;
+      }
+  
+      TabButton #EntityToolSettings {
+        Id: "EntityToolSettings";
+        Icon: "IconGeneralSettings.png";
+        IconSelected: "IconGeneralSettingsActivated.png";
+        TooltipText: %client.builderTools.panel.quickSettings;
+        TextTooltipStyle: $C.@DefaultTextTooltipStyle;
+      }
+  
+      TabButton #SelectedEntity {
+        Id: "SelectedEntity";
+        Icon: "IconGeneralSettings.png";
+        IconSelected: "IconGeneralSettingsActivated.png";
+        TooltipText: %client.builderTools.panel.quickSettings;
+        TextTooltipStyle: $C.@DefaultTextTooltipStyle;
+      }
     }
 
-    TabButton #Brushes {
-      Id: "Brushes";
-      Icon: "IconGeneralSettings.png";
-      IconSelected: "IconGeneralSettingsActivated.png";
-      TooltipText: %client.builderTools.panel.quickSettings;
-      TextTooltipStyle: $C.@DefaultTextTooltipStyle;
-    }
+    $C.@Container {
+      @CloseButton = true;
+      Anchor: (Width: 700, Height: 500);
 
-    TabButton #EntityToolSettings {
-      Id: "EntityToolSettings";
-      Icon: "IconGeneralSettings.png";
-      IconSelected: "IconGeneralSettingsActivated.png";
-      TooltipText: %client.builderTools.panel.quickSettings;
-      TextTooltipStyle: $C.@DefaultTextTooltipStyle;
-    }
+      #Title {
+        Group {
+          $C.@Title {
+            @Text = "Shop Dialog Example";
+          }
+        }
+      }
 
-    TabButton #SelectedEntity {
-      Id: "SelectedEntity";
-      Icon: "IconGeneralSettings.png";
-      IconSelected: "IconGeneralSettingsActivated.png";
-      TooltipText: %client.builderTools.panel.quickSettings;
-      TextTooltipStyle: $C.@DefaultTextTooltipStyle;
-    }
-  }
+      #Content {
+        LayoutMode: Left;
 
-$C.@Container {
-  Anchor: (Width: 700, Height: 500);
+        Group #ElementList {
+          FlexWeight: 1;
+          LayoutMode: TopScrolling;
+          ScrollbarStyle: $C.@DefaultScrollbarStyle;
 
-  #Title {
-    Group {
-      $C.@Title {
-        @Text = "Shop Dialog Example";
+          Label #DebugLabel {
+            Text: "Settings";
+          }
+        }
       }
     }
   }
-
-  #Content {
-    LayoutMode: Left;
-
-    Group #ElementList {
-      FlexWeight: 1;
-      LayoutMode: TopScrolling;
-      ScrollbarStyle: $C.@DefaultScrollbarStyle;
-    }
-  }
-
-  #CloseButton {
-    Button {
-      Visible: true;
-    }
-  }
-}
-}
 }
