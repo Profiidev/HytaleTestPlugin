@@ -1,0 +1,128 @@
+$C = "../Common.ui";
+$S = "../Sounds.ui";
+
+$C.@PageOverlay {}
+
+@DefaultTabNavigation = (
+  Activate: (
+    SoundPath: "DefaultTabActivate.ogg",
+    Volume: -2,
+    MinPitch: -0.2,
+    MaxPitch: 0.2
+  ),
+  MouseHover: (
+    SoundPath: $S.@ButtonsLightHover,
+    Volume: 6
+  )
+);
+
+@IconOnlyTopTabAnchor = Anchor(Width: 82, Height: 62, Right: 5, Bottom: -14);
+@TextTopTabAnchor = Anchor(Height: 62, Right: 5, Bottom: -14);
+
+@IconOnlyTopTabStyle = TabStyleState(
+  Background: "Tab.png",
+  Overlay: "TabOverlay.png",
+  IconAnchor: (Width: 44, Height: 44),
+  LabelStyle: (FontSize: 19),
+  Anchor: @IconOnlyTopTabAnchor
+);
+
+@TextTopTabStyle = TabStyleState(
+  Background: (TexturePath: "Tab.png", Border: 3),
+  Overlay: "TabSelectedOverlay.png",
+  IconAnchor: (Width: 44, Height: 44),
+  LabelStyle: (FontSize: 19),
+  Padding: (Left: 20, Right: 20, Top: 14),
+  Anchor: @TextTopTabAnchor
+);
+
+@IconOnlyTopTabsStyle = TabNavigationStyle(
+  TabStyle: (
+    Default: @IconOnlyTopTabStyle,
+    Hovered: (...@IconOnlyTopTabStyle, Anchor: (...@IconOnlyTopTabAnchor, Bottom: -5)),
+    Pressed: (...@IconOnlyTopTabStyle, Anchor: (...@IconOnlyTopTabAnchor, Bottom: -8))
+  ),
+  SelectedTabStyle: (
+    Default: (
+      ...@IconOnlyTopTabStyle,
+      Anchor: (...@IconOnlyTopTabAnchor, Bottom: 0),
+      IconAnchor: (Width: 44, Height: 44),
+      Overlay: "TabSelectedOverlay.png"
+    )
+  ),
+  TabSounds: @DefaultTabNavigation
+);
+
+Group {
+  LayoutMode: CenterMiddle;
+  Padding: Padding(Full: $C.@FullPaddingValue);
+
+  Group {
+    LayoutMode: Top;
+
+    TabNavigation #MainTabs {
+      Anchor: (Height: 62 + 4, Left: 2, Right: 0);
+      Style: @IconOnlyTopTabsStyle;
+      SelectedTab: "Settings";
+  
+      TabButton #Settings {
+        Id: "Settings";
+        Icon: "IconGeneralSettings.png";
+        IconSelected: "IconGeneralSettingsActivated.png";
+        TooltipText: %client.builderTools.panel.quickSettings;
+        TextTooltipStyle: $C.@DefaultTextTooltipStyle;
+      }
+  
+      TabButton #Brushes {
+        Id: "Brushes";
+        Icon: "IconGeneralSettings.png";
+        IconSelected: "IconGeneralSettingsActivated.png";
+        TooltipText: %client.builderTools.panel.quickSettings;
+        TextTooltipStyle: $C.@DefaultTextTooltipStyle;
+      }
+  
+      TabButton #EntityToolSettings {
+        Id: "EntityToolSettings";
+        Icon: "IconGeneralSettings.png";
+        IconSelected: "IconGeneralSettingsActivated.png";
+        TooltipText: %client.builderTools.panel.quickSettings;
+        TextTooltipStyle: $C.@DefaultTextTooltipStyle;
+      }
+  
+      TabButton #SelectedEntity {
+        Id: "SelectedEntity";
+        Icon: "IconGeneralSettings.png";
+        IconSelected: "IconGeneralSettingsActivated.png";
+        TooltipText: %client.builderTools.panel.quickSettings;
+        TextTooltipStyle: $C.@DefaultTextTooltipStyle;
+      }
+    }
+
+    $C.@Container {
+      @CloseButton = true;
+      Anchor: (Width: 700, Height: 500);
+
+      #Title {
+        Group {
+          $C.@Title {
+            @Text = "Shop Dialog Example";
+          }
+        }
+      }
+
+      #Content {
+        LayoutMode: Left;
+
+        Group #ElementList {
+          FlexWeight: 1;
+          LayoutMode: TopScrolling;
+          ScrollbarStyle: $C.@DefaultScrollbarStyle;
+
+          Label #DebugLabel {
+            Text: "Settings";
+          }
+        }
+      }
+    }
+  }
+}
