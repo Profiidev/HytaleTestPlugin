@@ -1,8 +1,7 @@
 $C = "../Common.ui";
+$S = "../Sounds.ui";
 
 $C.@PageOverlay {}
-
-@ButtonsLightHover = "ButtonsLightHover.ogg";
 
 @DefaultTabNavigation = (
   Activate: (
@@ -12,7 +11,7 @@ $C.@PageOverlay {}
     MaxPitch: 0.2
   ),
   MouseHover: (
-    SoundPath: @ButtonsLightHover,
+    SoundPath: $S.@ButtonsLightHover,
     Volume: 6
   )
 );
@@ -55,8 +54,11 @@ $C.@PageOverlay {}
 );
 
 Group {
+  LayoutMode: Center;
+  Padding: Padding(Full: $C.@FullPaddingValue);
+
+Group {
   LayoutMode: Top;
-  Anchor: (Top: 112, Right: 50);
 
   TabNavigation #MainTabs {
     Anchor: (Height: 62 + 4, Left: 2, Right: 0);
@@ -84,7 +86,6 @@ Group {
       Icon: "IconGeneralSettings.png";
       IconSelected: "IconGeneralSettingsActivated.png";
       TooltipText: %client.builderTools.panel.quickSettings;
-      Visible: false;
       TextTooltipStyle: $C.@DefaultTextTooltipStyle;
     }
 
@@ -93,15 +94,12 @@ Group {
       Icon: "IconGeneralSettings.png";
       IconSelected: "IconGeneralSettingsActivated.png";
       TooltipText: %client.builderTools.panel.quickSettings;
-      Visible: false;
       TextTooltipStyle: $C.@DefaultTextTooltipStyle;
     }
   }
 
 $C.@Container {
   Anchor: (Width: 700, Height: 500);
-  
-
 
   #Title {
     Group {
@@ -120,5 +118,12 @@ $C.@Container {
       ScrollbarStyle: $C.@DefaultScrollbarStyle;
     }
   }
+
+  #CloseButton {
+    Button {
+      Visible: true;
+    }
   }
+}
+}
 }

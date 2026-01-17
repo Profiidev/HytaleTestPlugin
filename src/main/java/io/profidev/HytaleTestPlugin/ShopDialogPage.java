@@ -29,8 +29,9 @@ public class ShopDialogPage extends InteractiveCustomUIPage<ShopDialogPage.ShopD
       @Nonnull UIEventBuilder uiEventBuilder,
       @Nonnull Store<EntityStore> store) {
     uiCommandBuilder.append("Pages/ShopDialog.ui");
-    //uiEventBuilder.addEventBinding(CustomUIEventBindingType.Activating, "#GreetButton",
-     //   new EventData().append("@PlayerName", "#NameInput.Value"));
+    // uiEventBuilder.addEventBinding(CustomUIEventBindingType.Activating,
+    // "#GreetButton",
+    // new EventData().append("@PlayerName", "#NameInput.Value"));
   }
 
   @Override
